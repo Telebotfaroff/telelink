@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Shield, Plus, LogOut, LayoutDashboard, Link as LinkIcon, ArrowRight } from "lucide-react";
+import { Shield, Plus, LogOut, LayoutDashboard, Link as LinkIcon, ArrowRight, Settings as SettingsIcon } from "lucide-react";
 import CreatePostDialog from "@/components/CreatePostDialog";
 import { Sidebar, SidebarProvider, SidebarTrigger, SidebarInset, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
 import LinkSection from "@/components/LinkSection";
+import Settings from "@/pages/Settings";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 
 const Dashboard = () => {
@@ -41,6 +42,12 @@ const Dashboard = () => {
               <SidebarMenuButton onClick={() => setActiveView("links")} isActive={activeView === "links"}>
                 <LinkIcon className="h-5 w-5 mr-3" />
                 <span className="text-lg">Links</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton onClick={() => setActiveView("settings")} isActive={activeView === "settings"}>
+                <SettingsIcon className="h-5 w-5 mr-3" />
+                <span className="text-lg">Settings</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
@@ -89,6 +96,7 @@ const Dashboard = () => {
                 </div>
             )}
             {activeView === 'links' && <LinkSection />}
+            {activeView === 'settings' && <Settings />}
         </main>
 
         <CreatePostDialog

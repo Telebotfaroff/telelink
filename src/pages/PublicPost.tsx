@@ -92,7 +92,7 @@ const PublicPost = () => {
   return (
     <div className="min-h-screen bg-gray-900 text-white py-12 px-4">
       <div className="max-w-2xl mx-auto">
-        <div className="flex items-center justify-center mb-8">
+        <div className="flex items-center justify-center mb-4">
           <div className="flex items-center gap-2">
             <Shield className="h-8 w-8 text-cyan-400" />
             <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
@@ -100,6 +100,19 @@ const PublicPost = () => {
             </h1>
           </div>
         </div>
+
+        <p className="text-center text-sm text-gray-400 mb-8 px-4">
+          This website is owned and maintained by{" "}
+          <a
+            href="https://telemovie.netlify.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-cyan-400 hover:underline"
+          >
+            https://telemovie.netlify.app/
+          </a>{" "}
+          only for link sharing.
+        </p>
 
         <Card className="bg-transparent border-0 shadow-none">
           <CardHeader>
@@ -119,6 +132,16 @@ const PublicPost = () => {
             ))}
           </CardContent>
         </Card>
+
+        <div className="mt-8 text-center">
+            <Button
+                onClick={() => handleLinkClick("https://telemovie.netlify.app/")}
+                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-4 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all"
+                size="lg"
+            >
+                Visit Our Website
+            </Button>
+        </div>
 
         <p className="text-center text-sm text-gray-500 mt-8">
           Powered by tellelink
