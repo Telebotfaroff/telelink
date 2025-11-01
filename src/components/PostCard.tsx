@@ -29,7 +29,7 @@ const PostCard = ({ post, onDelete }: PostCardProps) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-  const postUrl = `${window.location.origin}/p/${post.slug}`;
+  const postUrl = `${window.location.origin}/${post.slug}`;
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(postUrl);

@@ -49,9 +49,7 @@ const CreatePostDialog = ({ open, onOpenChange, onPostCreated }: CreatePostDialo
     return title
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "") + 
-      "-" + 
-      Math.random().toString(36).substring(2, 8);
+      .replace(/(^-|-$)/g, "");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
