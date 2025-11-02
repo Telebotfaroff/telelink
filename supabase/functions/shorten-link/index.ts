@@ -32,11 +32,15 @@ serve(async (req) => {
 
     console.log('Shortening URL:', url);
 
-    // Call gplinks.com API to shorten the link
-    const response = await fetch(`https://gplinks.com/api?api=${apiKey}&url=${encodeURIComponent(url)}`);
+    // Call GPLinks API to shorten the link (correct endpoint: api.gplinks.com)
+    const apiUrl = `https://api.gplinks.com/api?api=${apiKey}&url=${encodeURIComponent(url)}`;
+    console.log('Calling GPLinks API:', apiUrl);
+    
+    const response = await fetch(apiUrl);
     
     if (!response.ok) {
-      console.error('GPLinks API error:', response.status, await response.text());
+      const errorText = await response.text();
+      console.error('GPLinks API error:', response.status, errorText);
       return new Response(
         JSON.stringify({ error: 'Failed to shorten link' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
