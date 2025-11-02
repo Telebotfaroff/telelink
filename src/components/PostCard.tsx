@@ -61,6 +61,11 @@ const PostCard = ({ post, onDelete }: PostCardProps) => {
           <p className="text-sm text-muted-foreground">
             Created {new Date(post.created_at).toLocaleDateString()}
           </p>
+          <div className="bg-muted p-2 rounded-md">
+            <p className="text-sm font-mono text-muted-foreground break-all">
+              {postUrl}
+            </p>
+          </div>
           <div className="flex gap-2">
             <Button
               variant="outline"
