@@ -2,17 +2,20 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Shield, Plus, LogOut, LayoutDashboard, Link as LinkIcon, ArrowRight, Settings as SettingsIcon } from "lucide-react";
+import { Shield, Plus, LogOut, LayoutDashboard, Link as LinkIcon, ArrowRight, Settings as SettingsIcon, MessageSquare } from "lucide-react";
 import CreatePostDialog from "@/components/CreatePostDialog";
 import { Sidebar, SidebarProvider, SidebarTrigger, SidebarInset, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
 import LinkSection from "@/components/LinkSection";
 import Settings from "@/pages/Settings";
+import Reports from "@/pages/Reports";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { useIsAdmin } from "@/hooks/useIsAdmin";
 
 const Dashboard = () => {
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [activeView, setActiveView] = useState("dashboard");
   const navigate = useNavigate();
+  const { isAdmin } = useIsAdmin();
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -86,6 +89,25 @@ const Dashboard = () => {
                   </div>
                 </SidebarMenuButton>
               </SidebarMenuItem>
+              
+              {isAdmin && (
+                <SidebarMenuItem>
+                  <SidebarMenuButton 
+                    onClick={() => setActiveView("reports")} 
+                    isActive={activeView === "reports"}
+                    className="group relative overflow-hidden transition-all duration-200"
+                  >
+                    <div className={`flex items-center gap-3 p-3 rounded-lg transition-all ${
+                      activeView === "reports" 
+                        ? "bg-primary text-primary-foreground shadow-lg" 
+                        : "hover:bg-muted/50"
+                    }`}>
+                      <MessageSquare className="h-5 w-5" />
+                      <span className="font-medium">Reports</span>
+                    </div>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              )}
             </SidebarMenu>
           </div>
           
@@ -142,6 +164,7 @@ const Dashboard = () => {
             )}
             {activeView === 'links' && <LinkSection />}
             {activeView === 'settings' && <Settings />}
+            {activeView === 'reports' && isAdmin && <Reports />}
         </main>
 
         <CreatePostDialog

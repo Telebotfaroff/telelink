@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Shield, ExternalLink, Link2 } from "lucide-react";
 import { toast } from "sonner";
+import ReportDialog from "@/components/ReportDialog";
 
 interface Link {
   id: string;
@@ -148,14 +149,20 @@ const PublicPost = () => {
           </CardContent>
         </Card>
 
-        <div className="mt-8 text-center">
+        <div className="mt-8 space-y-4">
+          <div className="text-center">
             <Button
-                onClick={() => handleLinkClick("https://telemovie.netlify.app/")}
-                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-4 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all"
-                size="lg"
+              onClick={() => handleLinkClick("https://telemovie.netlify.app/")}
+              className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-4 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all"
+              size="lg"
             >
-                Visit Our Website
+              Visit Our Website
             </Button>
+          </div>
+          
+          <div className="max-w-md mx-auto">
+            <ReportDialog postId={post.id} />
+          </div>
         </div>
 
         <p className="text-center text-sm text-gray-500 mt-8">
