@@ -9,7 +9,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Plus, Trash2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Plus, Trash2, Link2, Link2Off } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -31,8 +32,10 @@ const CreatePostDialog = ({ open, onOpenChange, onPostCreated }: CreatePostDialo
   const [linkShortenerEnabled, setLinkShortenerEnabled] = useState(false);
 
   useEffect(() => {
-    fetchUserSettings();
-  }, []);
+    if (open) {
+      fetchUserSettings();
+    }
+  }, [open]);
 
   const fetchUserSettings = async () => {
     try {
@@ -122,14 +125,16 @@ const CreatePostDialog = ({ open, onOpenChange, onPostCreated }: CreatePostDialo
       if (postError) throw postError;
 
       // Shorten links if enabled
-      const processedLinks = linkShortenerEnabled
-        ? await Promise.all(
-            validLinks.map(async (link) => ({
-              ...link,
-              url: await shortenLink(link.url),
-            }))
-          )
-        : validLinks;
+      let processedLinks = validLinks;
+      if (linkShortenerEnabled) {
+        toast.info("Shortening links...");
+        processedLinks = await Promise.all(
+          validLinks.map(async (link) => ({
+            ...link,
+            url: await shortenLink(link.url),
+          }))
+        );
+      }
 
       const linksToInsert = processedLinks.map((link, index) => ({
         post_id: post.id,
@@ -164,8 +169,24 @@ const CreatePostDialog = ({ open, onOpenChange, onPostCreated }: CreatePostDialo
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Create New Post</DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="flex items-center gap-2 flex-wrap">
             Add a title and up to 20 links with custom button names
+            <Badge 
+              variant={linkShortenerEnabled ? "default" : "secondary"}
+              className="ml-auto"
+            >
+              {linkShortenerEnabled ? (
+                <>
+                  <Link2 className="h-3 w-3 mr-1" />
+                  Link Shortener ON
+                </>
+              ) : (
+                <>
+                  <Link2Off className="h-3 w-3 mr-1" />
+                  Link Shortener OFF
+                </>
+              )}
+            </Badge>
           </DialogDescription>
         </DialogHeader>
 

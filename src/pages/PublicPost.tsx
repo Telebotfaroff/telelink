@@ -3,7 +3,8 @@ import { useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, ExternalLink } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Shield, ExternalLink, Link2 } from "lucide-react";
 import { toast } from "sonner";
 
 interface Link {
@@ -69,6 +70,10 @@ const PublicPost = () => {
     return colors[index % colors.length];
   };
 
+  const isShortened = (url: string) => {
+    return url.includes('gplinks.com') || url.includes('gplnk.com');
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-900">
@@ -120,15 +125,25 @@ const PublicPost = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             {links.map((link, index) => (
-              <Button
-                key={link.id}
-                onClick={() => handleLinkClick(link.url)}
-                className={`w-full justify-center group shadow-lg hover:shadow-xl transition-all gap-3 text-white font-bold py-6 px-4 rounded-lg ${getButtonClass(index)}`}
-                size="lg"
-              >
-                <span className="font-medium text-lg tracking-wide">{link.button_name}</span>
-                <ExternalLink className="h-5 w-5 opacity-70 group-hover:opacity-100 transition-opacity" />
-              </Button>
+              <div key={link.id} className="relative">
+                {isShortened(link.url) && (
+                  <Badge 
+                    variant="secondary" 
+                    className="absolute -top-2 -right-2 z-10 bg-cyan-500/20 text-cyan-400 border-cyan-500/30 backdrop-blur-sm"
+                  >
+                    <Link2 className="h-3 w-3 mr-1" />
+                    Shortened
+                  </Badge>
+                )}
+                <Button
+                  onClick={() => handleLinkClick(link.url)}
+                  className={`w-full justify-center group shadow-lg hover:shadow-xl transition-all gap-3 text-white font-bold py-6 px-4 rounded-lg ${getButtonClass(index)}`}
+                  size="lg"
+                >
+                  <span className="font-medium text-lg tracking-wide">{link.button_name}</span>
+                  <ExternalLink className="h-5 w-5 opacity-70 group-hover:opacity-100 transition-opacity" />
+                </Button>
+              </div>
             ))}
           </CardContent>
         </Card>

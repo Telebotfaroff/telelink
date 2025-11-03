@@ -119,17 +119,22 @@ const Settings = () => {
                 control={form.control}
                 name="enableLinkShortener"
                 render={({ field }) => (
-                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 bg-muted/50">
                     <div className="space-y-0.5">
                       <FormLabel className="text-base">Link Shortener</FormLabel>
                       <FormDescription>
-                        Automatically shorten links using GPLinks.com when creating posts
+                        {field.value 
+                          ? "✓ Links will be automatically shortened using GPLinks.com when creating posts" 
+                          : "Links will not be shortened and will use their original URLs"}
                       </FormDescription>
                     </div>
                     <FormControl>
                       <Switch
                         checked={field.value}
-                        onCheckedChange={field.onChange}
+                        onCheckedChange={(checked) => {
+                          field.onChange(checked);
+                          toast.info(checked ? "Link shortener enabled" : "Link shortener disabled");
+                        }}
                       />
                     </FormControl>
                   </FormItem>
